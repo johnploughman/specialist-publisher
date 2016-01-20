@@ -16,7 +16,7 @@ private
   end
 
   # This Struct is for the document_types method below
-  FormatStruct = Struct.new(:klass, :document_type, :format_name, :title)
+  FormatStruct = Struct.new(:klass, :document_type, :format_name, :title, :organisations)
 
   def document_types
     # For each format that follows the standard naming convention, this
@@ -34,7 +34,8 @@ private
     #     klass: GdsReports
     #     document_type: "gds-reports",
     #     format_name: "gds_report",
-    #     title: "GDS Report"
+    #     title: "GDS Report",
+    #     organisations: ["a-content-id"],
     #   }
     # }
 
@@ -48,7 +49,8 @@ private
           v,
           k.downcase.parameterize.pluralize,
           k.downcase.parameterize.underscore,
-          k
+          k,
+          v.organisations,
         )
       }
     end.reduce({}, :merge)
