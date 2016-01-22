@@ -158,7 +158,11 @@ class Document
       ]
     ).to_ostruct
 
-    response.map { |payload| self.find(payload.content_id) }
+    payloads = response.map { |payload| publishing_api.get_content(payload.content_id).to_ostruct }
+
+    payloads.select! {|content_item| content_item.details.metadata.document_type == self.format }
+
+    payloads.map { |p| self.from_publishing_api(p) }
   end
 
   def self.find(content_id)
